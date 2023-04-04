@@ -1,0 +1,11 @@
+--- uploader.py	2023-04-03 19:33:20
++++ ckan/ckan/lib/uploader.py	2023-04-03 19:33:41
+@@ -93,7 +93,7 @@
+ 
+ 
+ def get_max_resource_size() -> int:
+-    return config.get('ckan.max_resource_size')
++    return int(config.get('ckan.max_resource_size'))
+ 
+ 
+ class Upload(object):
