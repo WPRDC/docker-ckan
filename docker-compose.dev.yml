@@ -16,20 +16,28 @@ services:
       - db
       - solr
       - redis
-      - datapusher
     ports:
       - "0.0.0.0:${CKAN_PORT}:5000"
     volumes:
       - ./src:/srv/app/src_extensions
       - ckan_storage:/var/lib/ckan
-    
 
-  datapusher:
-    container_name: datapusher
+  datapusher-plus:
+    container_name: datapusher-plus
+    platform: linux/amd64
     build:
-      context: datapusher/
+      context: ./datapusher-plus
+      dockerfile: Dockerfile
     ports:
       - "8800:8800"
+    links:
+      - ckan-dev
+      - db
+    depends_on:
+      - db
+      - ckan-dev
+    env_file:
+      - ./datapusher-plus/.env
 
   db:
     container_name: db
@@ -37,6 +45,9 @@ services:
       - .env
     build:
       context: postgresql/
+#    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - "5432:5432"
     environment:
       - PGDATA=/var/lib/postgresql/data/db
     volumes:
