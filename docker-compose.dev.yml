@@ -46,7 +46,7 @@ services:
     build:
       context: postgresql/
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - PGDATA=/var/lib/postgresql/data/db
     volumes:

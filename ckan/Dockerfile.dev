@@ -2,6 +2,8 @@ FROM openknowledge/ckan-dev:2.10
 
 MAINTAINER Western Pennsylvania Regional Data Center <wprdc@pitt.edu>
 
+RUN apk add jq
+
 # Set timezone
 ARG TZ
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
@@ -47,8 +49,17 @@ RUN pip3 install -e git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-f
     pip3 install -r ${APP_DIR}/src/ckanext-fluent/requirements.txt
 
 
+# Storage permissions
+RUN mkdir -p /var/lib/ckan/uploads
 
-#COPY docker-entrypoint.d/* /docker-entrypoint.d/
+RUN sudo chown -R ckan:ckan /var/lib/ckan/uploads
+RUN sudo chmod u+rwx /var/lib/ckan
+
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
+
+# Set up the deployment with some demo data
+RUN pip install ckanapi
+COPY fixtures /tmp/fixtures
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
