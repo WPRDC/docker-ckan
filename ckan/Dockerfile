@@ -1,21 +1,62 @@
 FROM openknowledge/ckan-base:2.10
 
-MAINTAINER Your Name Here <you@example.com>
+MAINTAINER Western Pennsylvania Regional Data Center <wprdc@pitt.edu>
 
 # Set timezone
 ARG TZ
 RUN echo $TZ > /etc/timezone
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
-# Install any extensions needed by your CKAN instance
-# (Make sure to add the plugins to CKAN__PLUGINS in the .env file)
-# For instance:
-RUN pip install -e git+https://github.com/ckan/ckanext-pages.git#egg=ckanext-pages && \
-    pip install -e git+https://github.com/ckan/ckanext-dcat.git@v0.0.6#egg=ckanext-dcat && \
-    pip install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v0.0.6/requirements.txt
+# Install extensions
+### DCAT ###
+RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git#egg=ckanext-dcat && \
+     pip3 install -r ${APP_DIR}/src/ckanext-dcat/requirements.txt
 
-# Install the extension(s) you wrote for your own project
-# RUN pip install -e git+https://github.com/your-org/ckanext-your-extension.git@v1.0.0#egg=ckanext-your-extension
+### Harvester ###
+RUN pip3 install -e 'git+https://github.com/ckan/ckanext-harvest.git@master#egg=ckanext-harvest' && \
+    pip3 install -r ${APP_DIR}/src/ckanext-harvest/pip-requirements.txt
+
+### Hierarchy ###
+RUN pip3 install -e "git+https://github.com/davidread/ckanext-hierarchy.git#egg=ckanext-hierarchy" && \
+    pip3 install -r ${APP_DIR}/src/ckanext-hierarchy/requirements.txt
+### Scheming ###
+RUN  pip3 install -e 'git+https://github.com/ckan/ckanext-scheming.git@master#egg=ckanext-scheming'
+
+### PDF View ###
+RUN pip3 install ckanext-pdfview
+
+### Geoview ###
+RUN pip3 install -e git+https://github.com/ckan/ckanext-geoview.git#egg=ckanext-geoview
+
+### Office Docs ###
+RUN pip3 install -e git+https://github.com/jqnatividad/ckanext-officedocs.git#egg=ckanext-officedocs
+
+### Featured Views ###
+RUN pip3 install -e git+https://github.com/OpenGov-OpenData/ckanext-featuredviews.git#egg=ckanext-featuredviews
+
+### DataJSON ###
+### TODO: fork this repo and update it to work with 2.10
+RUN pip3 install -e git+https://github.com/GSA/ckanext-datajson.git#egg=ckanext-datajson && \
+    pip3 install -r ${APP_DIR}/src/ckanext-datajson/requirements.txt
+
+### Report ###
+RUN pip3 install -e git+https://github.com/ckan/ckanext-report.git#egg=ckanext-report
+
+### Fluent ###
+RUN pip3 install -e git+https://github.com/ckan/ckanext-fluent.git#egg=ckanext-fluent && \
+    pip3 install -r ${APP_DIR}/src/ckanext-fluent/requirements.txt
+
+# Install Theme
+RUN pip install -e git+https://github.com/wprdc/ckanext-wprdctheme.git#egg=ckanext-wprdctheme
+
+
+# Storage permissions
+RUN mkdir -p /var/lib/ckan/uploads
+
+RUN sudo chown -R ckan:ckan /var/lib/ckan/uploads
+RUN sudo chmod u+rwx /var/lib/ckan
+
+# No need to load demo data in production
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)

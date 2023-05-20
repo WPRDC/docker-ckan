@@ -57,6 +57,7 @@ RUN sudo chmod u+rwx /var/lib/ckan
 
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
 
+
 # Set up the deployment with some demo data
 RUN pip install ckanapi
 COPY fixtures /tmp/fixtures
