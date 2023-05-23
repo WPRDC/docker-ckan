@@ -56,7 +56,9 @@ RUN mkdir -p /var/lib/ckan/uploads
 RUN sudo chown -R ckan:ckan /var/lib/ckan/uploads
 RUN sudo chmod u+rwx /var/lib/ckan
 
-# No need to load demo data in production
+# Storage permissions
+RUN sudo chown -R ckan:ckan /var/lib/ckan
+RUN sudo chmod u+rwx /var/lib/ckan
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
