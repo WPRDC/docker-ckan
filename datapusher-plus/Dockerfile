@@ -63,8 +63,7 @@ RUN ${VENV}/bin/pip install uwsgi python-dateutil
 
 #INSTALL DATAPUSHER-PLUS FROM SOURCE REPO
 # currently replaced with a local copy of the source code
-COPY ./src/datapusher-plus ${SRC_DIR}/datapusher-plus
-#RUN git clone --branch 0.11.0 https://github.com/datHere/datapusher-plus
+RUN git clone --branch 0.11.0 https://github.com/datHere/datapusher-plus
 RUN cd ${SRC_DIR}/datapusher-plus && \
    ${VENV}/bin/pip install -r requirements-dev.txt && \
    ${VENV}/bin/pip install tzdata --upgrade && \
