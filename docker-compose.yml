@@ -4,6 +4,7 @@ services:
 
   ckan:
     container_name: ckan
+    platform: linux/amd64
     build:
       context: ckan/
       dockerfile: Dockerfile
@@ -16,8 +17,8 @@ services:
       - redis
     ports:
       - "${CKAN_PORT}:5000"
-    volumes:
-      - /data/ckan:/var/lib/ckan
+#    volumes:
+#      - /data/ckan:/var/lib/ckan
 
   datapusher-plus:
     container_name: datapusher-plus

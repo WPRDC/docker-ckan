@@ -55,7 +55,7 @@ RUN mkdir -p /var/lib/ckan/uploads
 RUN sudo chown -R ckan:ckan /var/lib/ckan/uploads
 RUN sudo chmod u+rwx /var/lib/ckan
 
-COPY docker-entrypoint.d/* /docker-entrypoint.d/
+COPY docker-entrypoint.d.dev/* /docker-entrypoint.d/
 
 
 # Set up the deployment with some demo data

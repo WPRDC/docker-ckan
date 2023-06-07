@@ -60,6 +60,9 @@ RUN sudo chmod u+rwx /var/lib/ckan
 RUN sudo chown -R ckan:ckan /var/lib/ckan
 RUN sudo chmod u+rwx /var/lib/ckan
 
+# Custom scripts to run on start
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
+
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
 # See https://github.com/okfn/docker-ckan#applying-patches
