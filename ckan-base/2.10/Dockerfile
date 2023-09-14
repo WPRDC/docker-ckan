@@ -8,13 +8,17 @@ ENV PIP_SRC=${SRC_DIR}
 ENV CKAN_STORAGE_PATH=/var/lib/ckan
 ENV GIT_URL=https://github.com/ckan/ckan.git
 # CKAN version to build
-ENV GIT_BRANCH=ckan-2.10.0
+ENV GIT_BRANCH=ckan-2.10.1
 # Customize these on the .env file if needed
 ENV CKAN_SITE_URL=http://localhost:5000
 ENV CKAN__PLUGINS image_view text_view recline_view datastore datapusher envvars
 
 # UWSGI options
 ENV UWSGI_HARAKIRI=50
+
+# optional. If the "expire_api_token" is enabled you will need this.
+ENV DATAPUSHER_TOKEN_EXPIRES_IN=
+ENV DATAPUSHER_TOKEN_EXPIRES_UNIT=
 
 WORKDIR ${APP_DIR}
 
