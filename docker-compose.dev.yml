@@ -47,6 +47,7 @@ services:
       context: postgresql/
     ports:
       - "5433:5432"
+    shm_size: 12g
     environment:
       - PGDATA=/var/lib/postgresql/data/db
     volumes:
@@ -54,7 +55,7 @@ services:
 
   solr:
     container_name: solr
-    image: ckan/ckan-solr:2.9-solr8
+    image: ckan/ckan-solr:2.10-solr9
     ports:
       - "8983:8983"
     volumes:
@@ -63,6 +64,17 @@ services:
   redis:
     container_name: redis
     image: redis:alpine
+
+  # martin - tile server
+  tiles:
+    image: ghcr.io/maplibre/martin:v0.8.7
+    platform: linux/x86_64
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - "DATABASE_URL=${CKAN_DATASTORE_READ_URL}"
+      - RUST_LOG=actix_web=info,martin=debug,tokio_postgres=debug
 
 volumes:
   ckan_storage:

@@ -15,9 +15,9 @@ if [ "$groups_len" -lt 5 ]; then
 fi
 
 # Datasets
-if [ "$datasets_len" -lt 10 ]; then
-  ckanapi load datasets -I /tmp/fixtures/datasets.jsonl -p 4 -c $CKAN_INI
-fi
+#if [ "$datasets_len" -lt 10 ]; then
+#  ckanapi load datasets -I /tmp/fixtures/datasets.jsonl -p 4 -c $CKAN_INI
+#fi
 
 # Resources
 # todo: sprinkle some example resources in some datasets
